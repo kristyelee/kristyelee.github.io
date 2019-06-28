@@ -91,7 +91,7 @@ img {
 .prev, .next {
   cursor: pointer;
   position: absolute;
-  top: 35%;
+  top: 30%;
   width: auto;
   margin-top: -22px;
   padding: 16px;
@@ -474,6 +474,10 @@ img {
 	z-index: 2;
 	top: 0px;
 	left: 0px;
+}
+
+#lightbox {
+    display: none;
 }
 
 #specific-project-container {
