@@ -207,6 +207,7 @@ img {
     -webkit-text-stroke: 1px #5d4f4f;
     text-align: center;
     text-shadow: 8px 8px 10px #000000;
+    display: none;
 }
 
 #name {
@@ -219,6 +220,7 @@ img {
     transform: translate(-50%, -105%);
     text-align: center;
     text-shadow: 8px 8px 10px #000000;
+    display: none;
 }
 
 /*ABOUT*/
