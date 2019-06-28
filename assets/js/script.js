@@ -1,6 +1,46 @@
 $(document).ready(function() {
-
     $("#lightbox").hide();
+    var slideIndex = 0;
+    showSlides();
+    $("#name").hide();
+    $("#quote").hide();
+    $("#name").fadeIn(3000);
+    $("#quote").delay(2000).fadeIn(4000);
+    
+    function showSlides() {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none"; 
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1} 
+      slides[slideIndex-1].style.display = "block"; 
+      setTimeout(showSlides, 10000); // Change image every 10 seconds
+    }  
+
+    
+    $(".next").click(function() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none"; 
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1} 
+        slides[slideIndex-1].style.display = "block"; 
+    })
+    $(".prev").click(function() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none"; 
+        }
+        slideIndex--;
+        if (slideIndex < 1) {slideIndex = 4} 
+        slides[slideIndex-1].style.display = "block"; 
+        
+    })
     
     $(".project").click(function() {
         let proj_name = $(this).attr("id");
@@ -22,8 +62,6 @@ $(document).ready(function() {
         $( ".picture" ).remove();
 		$("#lightbox").hide();
     })
+  
     
-    $('.slider').sss({
-        slideShow : true, // Set to false to prevent SSS from automatically animating.startOn : 0, // Slide to display first. Uses array notation (0 = first slide).transition : 400, // Length (in milliseconds) of the fade transition.speed : 3500, // Slideshow speed in milliseconds.showNav : true // Set to false to hide navigation arrows.
-    });
 });
