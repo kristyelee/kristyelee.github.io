@@ -3,6 +3,7 @@ body, html {	/*the outer layer of the site and global style attributes*/
     margin: 0px;
     height: 100%;
     width: 100%;
+    background-color: #242850;
     background-image: linear-gradient(#191e4d, white);
     display: flex;
     background-repeat: no-repeat;
@@ -24,18 +25,6 @@ body, html {	/*the outer layer of the site and global style attributes*/
 
 
 /* NAV BAR */
-.top-bar-1 {
-    width: 100%;
-    height: 3%;
-    position: fixed;
-    display: flex;
-    background-color: #232754;
-    flex-direction: horizontal;
-    justify-content: center;
-    top: 0%;
-    z-index: 3;
-}
-
 .nav-bar {
     width: 100%;
     position: fixed;
@@ -68,7 +57,9 @@ img {
 
 
 /* Slideshow */
-* {box-sizing:border-box}
+* {
+    box-sizing: border-box
+}
 
 /* Slideshow container */
 .slideshow-container {
@@ -176,7 +167,16 @@ img {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+}
 
+.title {
+    position: absolute;
+    left: 16%;
+    font-size: 48px;
+    color: white;
+    font-family: Futura, sans-serif;
+    text-align: center;
+    text-shadow: 8px 8px 10px #000000;
 }
 
 /*HOMEPAGE*/
@@ -198,18 +198,6 @@ img {
     justify-content: center;
 }
 
-#quote {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 40px;
-    color:/* #191e4d;*/ white;
-    position: absolute;
-    top: 70%;
-    -webkit-text-stroke: 1px #5d4f4f;
-    text-align: center;
-    text-shadow: 8px 8px 10px #000000;
-    display: none;
-}
-
 #name {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 140px;
@@ -223,17 +211,23 @@ img {
     display: none;
 }
 
+#quote {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 40px;
+    color:/* #191e4d;*/ white;
+    position: absolute;
+    top: 70%;
+    -webkit-text-stroke: 1px #5d4f4f;
+    text-align: center;
+    text-shadow: 8px 8px 10px #000000;
+    display: none;
+}
+
+
 /*ABOUT*/
 
-#about-title{
-    position: absolute;
+.title.about{
     top: 118%;
-    left: 16%;
-    font-size: 36px;
-    color: white;
-    font-family: Futura, sans-serif;
-    transform: rotate(-2deg);
-    text-align: center;
 }
 
 .about-item {
@@ -243,7 +237,7 @@ img {
     display: flex;
     flex-direction: horizontal;
     justify-content: center;
-    
+    align-items: center;
 }
 
 
@@ -252,9 +246,9 @@ img {
     display: flex;
     justify-content: center;
     width: 80%;
-    height: 99%;
-    border-radius: 5%;
+    height: 80%;
     overflow: hidden;
+    border-radius: 100%;
 }
 
 #resume-line {
@@ -275,15 +269,8 @@ img {
 
 /* PROJECTS */
 
-#projects-title{
-    position: absolute;
+.title.projects{
     top: 218%;
-    left: 16%;
-    font-size: 36px;
-    color: white;
-    font-family: Futura, sans-serif;
-    transform: rotate(-2deg);
-    text-align: center;
 }
 
 #projects-container {
@@ -298,19 +285,35 @@ img {
 }
 
 .project {
-    height: 45%;
+    height: 50%;
     width: 35%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     overflow: hidden;
     margin: 5px;
+    background: #9e9fb3;
     align-items: center;
+    box-shadow: 4px 4px 4px #000000a8;
 }
+
+#byow:hover {
+    box-shadow: 8px 8px 8px #000000a8;
+}
+
+#bearmaps:hover {
+    box-shadow: 8px 8px 8px #000000a8;
+}
+
+
+#maps:hover {
+    box-shadow: 8px 8px 8px #000000a8;
+}
+
 
 .proj-image{
     width: 85%;
-    height: 90%;
+    height: 75%;
     text-align: center;
     overflow: hidden;
 }
@@ -322,15 +325,8 @@ img {
 }
 
 /* EXPERIENCE */
-#experience-title{
-    position: absolute;
+.title.experience{
     top: 318%;
-    left: 16%;
-    font-size: 36px;
-    color: white;
-    font-family: Futura, sans-serif;
-    transform: rotate(-2deg);
-    text-align: center;
 }
 
 #experience-container {
@@ -411,15 +407,8 @@ img {
 
 /* CONTACT ME */
 
-#contact-title{
-    position: absolute;
+.title.contact{
     top: 418%;
-    left: 16%;
-    font-size: 36px;
-    color: white;
-    font-family: Futura, sans-serif;
-    transform: rotate(-2deg);
-    text-align: center;
 }
 
 #contact-container {

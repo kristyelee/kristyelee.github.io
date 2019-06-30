@@ -1,9 +1,9 @@
 $(document).ready(function() {
     $("#lightbox").hide();
-    var slideIndex = 0;
-    showSlides();
     $("#name").hide();
     $("#quote").hide();
+    var slideIndex = 0;
+    showSlides();
     $("#name").fadeIn(3000);
     $("#quote").delay(2000).fadeIn(4000);
     
