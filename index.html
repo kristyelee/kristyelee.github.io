@@ -52,13 +52,13 @@
                
                     
                     <div id="name">Kristy Lee</div>
-                   <!-- <div id="quote">Software Engineer. Programmer.</div> -->
+                    <div id="quote">Software Engineer</div>
                 </div>
                 <div><a name="about"></a></div>
                 <div class="container about">
                     <div class="title about">About Me</div>
                     <div class="about-item"> 
-                        <div id="kristy-picture"></div>
+                        <div id="kristy-picture"><img src="assets/img/TauBetaPi.PNG"/></div>
                     </div> 
                     <div class="about-item"> 
                         <div id="about-description">
@@ -66,23 +66,24 @@
                             <p>Outside of programming, my hobbies include watching/playing soccer, watching anime, doing math, and solving puzzles.</p>
                         </div>
                     </div>
-                    <div id="resume-line">View <a href="assets/files/Kristy_Lee_Resume.pdf">Resume.</a></div>
+                    <div id="resume-line">View <a id="rlink" href="assets/files/Kristy_Lee_Resume.pdf">Resume.</a></div>
                 </div>
                 
                 <div><a name="projects"></a></div>
                 <div class="container projects">
                     <div class="title projects">Projects</div>
+                    <p style="position: absolute;top: 228%;left: 16%;color: white;font-family: Futura, sans-serif;">Click to learn more about any project I've built!</p>
                     <div id="projects-container">
                         <div class="project" id="byow">
-                            <div class="proj-image"><img src="assets/img/byow.png"></div>
+                            <div class="proj-image"id="byow-img"><img src="assets/img/byow.png"></div>
                             <div class="proj-label">World Generator: BYOW Game</div>
                         </div>
                         <div class="project" id="bearmaps">
-                            <div class="proj-image"><img src="assets/img/bearmaps.png"></div>
+                            <div class="proj-image" id="bearmaps-img"><img src="assets/img/bearmaps.png"></div>
                             <div class="proj-label">BearMaps</div>
                         </div>
                         <div class="project" id="maps">
-                            <div class="proj-image"><img src="assets/img/maps.png"></div>
+                            <div class="proj-image" id="maps-img"><img src="assets/img/maps.png"></div>
                             <div class="proj-label">Maps</div>
                         </div>
                     </div>
@@ -95,34 +96,18 @@
                     <div class="title experience">Experience</div>
                     <div id="experience-container">
                         <div class="expr-item" id="skills"> 
-                            <p style="margin-left: 20px; margin-bottom: 0px; font-size: 20px;">Programming Languages</p>
-                            <ul style="margin: 10px;">
-                                <li>Python</li>
-                                <li>Java</li>
-                                <li>C</li>
-                                <li>SQL</li>
-                                <li><i>JavaScript</i></li>
-                                <li><i>JQuery</i></li>
-                                <li><i>HTML</i></li>
-                                <li><i>CSS</i></li>
-                                <li><i>LaTeX</i></li>
-                                <li><i>Scheme</i></li>
-                            </ul>
-                            <p style="margin-left: 20px; margin-bottom: 0px; margin-top: 5px; font-size: 20px;">Programming Tools</p>
-                            <ul style="margin: 10px;">
-                                <li>Git</li>
-                                <li>Unix</li>
-                            </ul>
+                            <div class="textbox">
+                                <p style="margin-bottom: 0px;"><b>Programming Languages</b></p><p style="margin-top: 0px;">Python, Java, C, SQL, <i>JavaScript</i>, <i>JQuery</i>, <i>HTML</i>, <i>CSS</i>, <i><span class="latex">L<sup>a</sup>T<sub>e</sub>X</span></i>, <i>Scheme</i></p>
+                                <p style="margin-bottom: 0px;"><b>Programming Tools</b></p><p style="margin-top: 0px;">Git, Unix</p>
+                            </div>
                         </div>
-                        <div class="expr-item" id="exp-flex"> 
-                            <div class="exp-item" id="software-team">
-                                <div class="textbox"><p style="margin-bottom: 0px;"><b>Berkeley Educators Engineering Software</b></p><p><i>February 2019-Present </i>I work as a developer intern for CS 61A's software team at UC Berkeley. CS 61A is one of UC Berkeley's standard introductory computer science courses, and thousands of students take this course each year. I work with the team to fix software issues found in software used in the CS 61A course. I've also optimized various calculations used for predicting statistics, such as wait time calculations for the CS 61A office hour queue. </p></div>
-                                <div class="exp-image"><img src="assets/img/bees.png"/></div>
-                            </div>
-                            <div class="exp-item" id="ai">
-                                <div class="exp-image"><img src="assets/img/cs61a.png"/></div>
-                                <div class="textbox"><p style="margin-bottom: 0px;"><b>CS 61A Academic Intern/Lab Assistant</b></p><p><i>January 2019-May 2019</i> I guide students' understanding of CS 61A programming content&mdash;recursion, tree structures, SQL, Scheme&mdash;in lab sections weekly. I work with other CS 61A AIs in office hours to clarify programming concepts that students need help with.</p></div>
-                            </div>
+                        <div class="expr-item" id="software-team"> 
+                            <div class="textbox"><p style="margin-bottom: 0px;"><b>Berkeley Educators Engineering Software</b></p><p><i>February 2019-Present </i>I work as a developer intern for CS 61A's software team at UC Berkeley. CS 61A is one of UC Berkeley's standard introductory computer science courses, and thousands of students take this course each year. I work with the team to fix software issues found in software used in the CS 61A course. I've also optimized various calculations used for predicting statistics, such as wait time calculations for the CS 61A office hour queue. </p></div>
+                            <div class="exp-image"><img src="assets/img/bees.png"/></div>
+                        </div>
+                        <div class="expr-item" id="ai"> 
+                            <div class="exp-image"><img src="assets/img/cs61a.png"/></div>
+                            <div class="textbox"><p style="margin-bottom: 0px;"><b>CS 61A Academic Intern/Lab Assistant</b></p><p><i>January 2019-May 2019</i> I guide students' understanding of CS 61A programming content&mdash;recursion, tree structures, SQL, Scheme&mdash;in lab sections weekly. I work with other CS 61A AIs in office hours to clarify programming concepts that students need help with.</p></div>
                         </div>
                     </div>
                 </div>
