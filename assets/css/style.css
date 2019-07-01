@@ -285,6 +285,7 @@ img {
 }
 
 .project {
+    cursor: pointer;
     height: 50%;
     width: 35%;
     display: flex;
@@ -496,6 +497,7 @@ img {
     width: 45%;
     height: 50%;
     overflow: hidden;
+    text-align: center;
 
 }
 .proj-desc {
