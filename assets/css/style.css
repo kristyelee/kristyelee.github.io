@@ -307,13 +307,13 @@ img {
 }
 
 #byow-img:hover {
-    animation: enlarge_photo ease-in 1s;
+    animation: enlarge_photo ease-in 0.5s;
     animation-fill-mode: both;
     animation-iteration-count: 1;
 }
 
 #bearmaps-img:hover {
-    animation: enlarge_photo ease-in 1s;
+    animation: enlarge_photo ease-in 0.5s;
     animation-fill-mode: both;
     animation-iteration-count: 1;
 }
@@ -321,7 +321,7 @@ img {
 
 #maps-img:hover {
    /* box-shadow: 8px 8px 8px #000000a8;*/
-    animation: enlarge_photo ease-in 0.3s;
+    animation: enlarge_photo ease-in 0.5s;
     animation-fill-mode: both;
     animation-iteration-count: 1;
 }
@@ -376,7 +376,7 @@ img {
     display: flex;
     flex-direction: horizontal;
     justify-content: center;
-    overflow: scroll;
+    /*overflow: scroll;*/
     margin: 5px;
     align-items: center;
     border-width: 2px;
