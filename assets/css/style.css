@@ -261,6 +261,10 @@ img {
 
 }
 
+#rlink:link {
+    color: white;
+}
+
 #rlink:active {
     color: rgb(228, 235, 250);
 }
