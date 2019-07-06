@@ -45,10 +45,10 @@ a {
     margin-left: 20px;
     font-family: Lucida Grande, sans-serif;
     color: white;
-    font-size: 20px;
+    font-size: 1.40vw;
     padding-top: 7px;
     padding-bottom: 5px;  
-    margin-top: 15px;
+    margin-top: 1.75vh;
 }
 
 img {
@@ -491,7 +491,7 @@ img {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    background-color: rgb(112, 129, 184);
+    background-color: /*rgb(112, 129, 184)*/ #333454;
     border-color: #1f2140;
     border-width: 2px;
     color: white;
@@ -581,6 +581,11 @@ img {
     z-index: 1;
 
 }
+
+.bottom-button:hover {
+    opacity: 1;
+}
+
 
 #copyright {
     font-size: 0.75em;
