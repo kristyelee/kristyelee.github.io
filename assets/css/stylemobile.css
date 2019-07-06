@@ -11,10 +11,10 @@ body, html {	/*the outer layer of the site and global style attributes*/
     background-attachment: fixed;
     
     }
-/*    
+
 * { 
     border: 1px solid red; 
-} */
+} 
 
 #website {
     width: 100%;   
