@@ -83,7 +83,7 @@ img {
 .prev, .next {
   cursor: pointer;
   position: absolute;
-  top: 30%;
+  top: 80%;
   width: auto;
   margin-top: -22px;
   padding: 16px;
