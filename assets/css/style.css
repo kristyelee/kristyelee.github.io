@@ -218,6 +218,8 @@ img {
     color:/* #191e4d;*/ white;
     position: absolute;
     top: 70%;
+    left: 50%;
+    transform: translate(-50%, 0%);
     -webkit-text-stroke: 1px #5d4f4f;
     text-align: center;
     text-shadow: 8px 8px 10px #000000;
