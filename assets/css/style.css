@@ -586,14 +586,16 @@ img {
 }
 
 .bottom-button:hover {
-    /*animation: opaque ease-in 2s;*/
-    opacity: 1;
+    animation: opaque ease-in 0.3s;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+   /* opacity: 1;*/
 }
-/*
+
 @keyframes opaque {
     from { opacity: 0.6; }
     to { opacity: 1}
-}*/
+}
 
 #copyright {
     font-size: 0.75em;
