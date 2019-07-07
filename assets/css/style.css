@@ -636,3 +636,9 @@ img {
 
 }
 
+@media screen and (max-height: 480) {
+    .textbox {
+        font-size: 0.5em;
+    }
+}
+
