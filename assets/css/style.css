@@ -49,6 +49,7 @@ a {
     padding-top: 7px;
     padding-bottom: 5px;  
     margin-top: 1.75vh;
+    text-align: center;
 }
 
 img {
@@ -59,7 +60,7 @@ img {
 
 /* Slideshow */
 * {
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 /* Slideshow container */
@@ -349,7 +350,7 @@ img {
 
 .proj-image{
     width: 85%;
-    height: 7M5%;
+    height: 75%;
     text-align: center;
     overflow: hidden;
 }
