@@ -314,6 +314,13 @@ img {
     border-color: white;
 }
 
+#to-do-img:hover {
+    /* box-shadow: 8px 8px 8px #000000a8;*/
+     animation: enlarge_photo ease-in 0.5s;
+     animation-fill-mode: both;
+     animation-iteration-count: 1;
+ }
+
 #byow-img:hover {
     animation: enlarge_photo ease-in 0.5s;
     animation-fill-mode: both;
