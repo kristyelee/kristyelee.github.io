@@ -617,6 +617,10 @@ img {
 }
 
 @media only screen and (max-width: 800px) {
+    #quote {
+        top: 60%;
+    }
+    
     #kristy-picture {
         width: 80%;
         height: 80%;
