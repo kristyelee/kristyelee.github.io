@@ -4,7 +4,7 @@ body, html {	/*the outer layer of the site and global style attributes*/
     height: 100%;
     width: 100%;
     font-size: 100%; /*16px*/
-    background-color: #383c5f;
+    background-color: #455082;
     /*background-image: linear-gradient(#191e4d, white);*/
     display: flex;
     background-repeat: no-repeat;
