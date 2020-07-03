@@ -308,7 +308,7 @@ img {
     justify-content: space-around;
     overflow: hidden;
     margin: 5px;
-    background: #333454;
+    background: #3e407d;
     align-items: center;
     /* box-shadow: 4px 4px 4px #000000a8; */
     border-color: white;
@@ -395,7 +395,7 @@ img {
     margin: 5px;
     align-items: center;
     border-width: 2px;
-    background-color: #35395d;
+    background-color: #3e407d;
     border-color: #1f2140;
 }
 
@@ -501,7 +501,7 @@ img {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    background-color: /*rgb(112, 129, 184)*/ #333454;
+    background-color: /*rgb(112, 129, 184)*/ #3e407d;
     border-color: #1f2140;
     border-width: 2px;
     color: white;
