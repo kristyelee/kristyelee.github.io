@@ -381,7 +381,8 @@ img {
     width: inherit;
     height: 65%;
     position: absolute;
-    top: 330%;
+    /* top: 330%; */
+    top: 350%;
     align-items: center;
 }
 
@@ -462,7 +463,8 @@ img {
 /* CONTACT ME */
 
 .title.contact{
-    top: 418%;
+    /* top: 418%; */
+    top: 455%;
 }
 
 #contact-container {
@@ -472,7 +474,8 @@ img {
     width: inherit;
     height: 65%;
     position: absolute;
-    top: 430%;
+    /* top: 430%; */
+    top: 470%;
     align-items: center;
 }
 
