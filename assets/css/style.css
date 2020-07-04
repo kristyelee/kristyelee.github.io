@@ -459,10 +459,27 @@ img {
     justify-content: center;
 }
 
+/* RESEARCH */
+.title.research{
+    top: 418%;
+}
+
+#research-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /* flex-wrap: wrap; */
+    width: inherit;
+    height: 65%;
+    position: absolute;
+    top: 430%;
+    align-items: center;
+}
+
 /* CONTACT ME */
 
 .title.contact{
-    top: 418%;
+    top: 518%;
 }
 
 #contact-container {
@@ -472,7 +489,7 @@ img {
     width: inherit;
     height: 65%;
     position: absolute;
-    top: 430%;
+    top: 530%;
     align-items: center;
 }
 
