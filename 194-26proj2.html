@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<!--
+    Plain-Academic by Vasilios Mavroudis
+    Released under the  Simplified BSD License/FreeBSD (2-clause) License.
+    https://github.com/mavroudisv/plain-academic
+-->
+
+<html lang="en">
+
+<head>
+    <title>CS 194-26 Project 2: Kristy Lee</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+    <!-- <link href='https://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>-->
+</head>
+
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Entries Column -->
+            <div class="col-md-8" style="min-height: 100vh; height: auto;">
+                <!-- <img class="img-responsive" src="banner.jpg" alt=""><br> -->
+                <h1>CS 194-26 Project 2 Report</h1>
+                <div class="col-md-4">
+                    <h2><p>Kristy Lee</p></h2>
+                    <p><b>kristylee@berkeley.edu</b></p>
+                    <p>
+                        This project involves working on code that experiments with filtering images, extracting low and high frequencies from images, and blending different images together seamlessly.
+                    </p>
+                </div>
+            <div style="margin-top:3%; text-align:left;">
+                    <h2>Part 1: Fun with Filters</h2>
+                    <h3>Part 1.1: Finite Difference Operator</h3>
+                    <p>
+                        In this part of the project, I will convolve the cameraman image with finite difference operators in order to obtain a gradient magnitude image for the cameraman image. From the obtained gradient magnitude image, I create another image where the edges of the gradient magnitude image are sharpened.
+                        Here is the original cameraman image:
+                    </p>
+                    <div align="center">
+                        <img src="images_2/cameraman.png" alt="Cameraman" style="width:300px;height:300px;"/>
+                    </div>
+                    <p>
+                        We have the following two finite difference operators: \(D_x=\begin{bmatrix} 1 -1 \\ \end{bmatrix}\), \(D_y=\begin{bmatrix} 1 \\ -1 \\ \end{bmatrix}\). I use scipy.signal's <code>convolve2d</code> function to convolve \(D_x\) and \(D_y\) around respective copies of the cameraman image. After obtaining the two resulting images (one from convolving the cameraman image with \(D_x\) and the other from convolving the cameraman image with \(D_y\)), 
+                        I compute the gradient magnitude image by taking the square root of the squares of the two convolvements, displayed in equation \[\sqrt{(D_x * \text{cameraman})^2 + (D_y * \text{cameraman})^2}\] where the operations are applied pixel-wise to produce the final gradient magnitude image. From there, I try to highlight the edges of the gradient magnitude image distinctly by defining \(\text{threshold} = 0.18\) and adjusting the values of the pixels of the gradient magnitude image by assigning to 0 if the pixel value is less than threshold and 1 otherwise. Here are the images:
+                    </p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/1_1_out_im_D_x.png" alt="Cameraman Convolved with D_x" style="width:300px;height:300px;"/>
+                                <figcaption align="center">Convolved with \(D_x\)</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/1_1_out_im_D_y.png" alt="Cameraman Convolved with D_y" style="width:300px;height:300px;"/>
+                                <figcaption align="center">Convolved with \(D_y\)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_1_out_gradient_magnitude_im.png" alt="Gradient Magnitude Image" style="width:300px;height:300px;"/>
+                                <figcaption align="center">Gradient Magnitude Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_1_out_gradient_im_edge_reduced_noise.png" alt="Edge Picture" style="width:300px;height:300px;"/>
+                                <figcaption align="center">Binarized Gradient Magnitude Image: Edge Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>Part 1.2: Derivative of Gaussian (DoG) Filter </h3>
+                    <p>
+                        Instead of convolving \(D_x\) and \(D_y\) over the cameraman image, we could instead try examining using a Gaussian filter when performing the convolution operations. To create the Gaussian filter, I call <code>cv2.getGaussianKernel(k, sigma)</code> twice to create a 1D Gaussian kernel and take the outer product of the 1D Gaussian kernel with its transpose to get the 2d Gaussian kernel to use in convolution. 
+                    </p>
+                    <p>
+                        I create the Gaussian filter with the parameters \(\text{kernel size k} = 10\) and \(\text{sigma} = 2\). I first convolve the cameraman image with the 2D Gaussian kernel to get a blurred cameraman image, make a copy of the blurred cameraman image, and then convolve \(D_x\) and \(D_y\) around the respective blurred images. Then, I obtain the gradient magnitude image (using the same formula stated above in 1.1), and binarize the gradient magnitude image using \(\text{threshold} = 0.05\) to get an image with the edges distinct. Here are the resulting images:
+                    </p>
+
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/cameraman.png" alt="Cameraman" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Cameraman</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_gradient_cameraman.png" alt="Cameraman Convolved with Gaussian Filter" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Cameraman Convolved with Gaussian</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_blurred_im_D_x.png" alt="Gaussian Blurred Image Convolved with D_x" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Blurred Image Convolved with \(D_x\)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_blurred_im_D_y.png" alt="Gaussian Blurred Image Convolved with D_y" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Blurred Image Convolved with \(D_y\)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_gradient_magnitude_im.png" alt="Gradient Magnitude Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Gradient Magnitude Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_gradient_im_edges_reduced_noise.png" alt="Binarized Gradient Magnitude Image: Edge Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Binarized Gradient Magnitude Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                   
+                    <p>Differences I see between directly convolving the cameraman image and convolving the blurred cameraman image is that when the blurred image is convolved with \(D_x\) and \(D_y\), the resulting images look darker and have more obviously outlined edges compared to the images resulting from the convolvement of \(D_x\) and \(D_y\) with the regular cameraman image. The gradient magnitude image corresponding to the blurred cameraman image has lighter, more faded edges than the gradient magnitude image corresponding to the regular cameraman image, and with the correct threshold the edge picture (binarized gradient magnitude) corresponding to the blurred cameraman image has less noise and stronger white edge outlines than the edge picture corresponding to the regular cameraman image, which has edges that are more grainy.</p>
+                    <p>I also explored another method of producing the edge picture (corresponding to the blurred cameraman image) by using a single convolution over the cameraman image instead of two by using the derivatives of the Gaussian filters. I produced \(DoG_x\) and \(DoG_y\) by convolving \(D_x\) and \(D_y\) respectively over the Gaussian filter (with parameters \(\text{kernel size k} = 10\) and \(\text{sigma} = 2\)). Then, I convolve \(DoG_x\) and \(DoG_y\) separately over copies of the original cameraman image. I produce the same gradient magnitude image (with minute differences) and edge picture (\(\text{threshold} = 0.05\)) as I did in the method discussed above, as shown below: </p>
+
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/1_2_out_DoG_x.png" alt="DoG_x" style="width:250px;height:250px;"/>
+                                <figcaption align="center">\(DoG_x\)</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_DoG_y.png" alt="DoG_y" style="width:250px;height:250px;"/>
+                                <figcaption align="center">\(DoG_y\)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_im_DoG_x.png" alt="Image Convolved with DoG_x" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Image Convolved with \(DoG_x\)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_im_DoG_y.png" alt="Image Convolved with DoG_y" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Image Convolved with \(DoG_y\)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_DoG_gradient_magnitude_im.png" alt="Gradient Magnitude Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Gradient Magnitude Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/1_2_out_new_DoG_im_edges_reduced_noise.png" alt="Binarized Gradient Magnitude Image: Edge Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Binarized Gradient Magnitude Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h2>Part 2: Fun with Frequencies!</h2>
+                    <h3>Part 2.1: Image "Sharpening"</h3>
+                    <p>In this section, I will demonstrate how I use the unsharp masking filter to produce a sharpened image from the original image. I first convolve a Gaussian filter around the original image to produce the low frequencies of the image, and subtract the low frequencies from the original image to get the high frequencies for the image. Then, with the original image, I add the high frequencies (multiplied by some constant \(\alpha\)) to the original image to produce a sharpened version of the original image. For the sharpened image, I also use <code>np.clip</code> to ensure values are between 0 and 1.</p>
+                    <p>If \(f\) is the original image and \(g\) is the Gaussian filter, then the unsharp mask filter technique can be summarized as one convolution: \[f + \alpha(f - f*g)\]</p>
+                    <p>Here's an example of the technique applied to the following Taj image, using parameters \(\text{kernel size k} = 9\) and \(\text{sigma} = 2\) for the Gaussian filter and \(\alpha=2\):</p>
+
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/taj.jpg" alt="Original Taj Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Original Taj Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_blurred_taj_image.png" alt="Gaussian Blurred Taj Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Gaussian Blurred Taj Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_taj_high_frequencies.png" alt="Taj Image High Frequencies" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Taj Image High Frequencies</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_sharpened_taj_image.png" alt="Sharpened Taj Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Sharpened Taj Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>As we can see, the sharpened image for the Taj image has sharper edges and a more crisp look compared to the regular Taj image.</p>
+
+                    <p>I also tried the sharpening technique on other images (Monastery, Great Wall of China, Tokyo), with parameters \(\text{kernel size k} = 9\) and \(\text{sigma} = 5\) for the Gaussian filter and \(\alpha=2\): </p>
+
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/monastery.jpg" alt="Original Monastery Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Original Monastery Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_blurred_monastery.png" alt="Gaussian Blurred Monastery Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Gaussian Blurred</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_monastery_high_frequencies.png" alt="Monastery Image High Frequencies" style="width:250px;height:250px;"/>
+                                <figcaption align="center">High Frequencies</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_monastery.png" alt="Sharpened Monastery Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Sharpened Monastery</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/great_wall_of_china.jpg" alt="Original Great Wall of China Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Original Great Wall of China Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_blurred_great_wall_of_china.png" alt="Gaussian Blurred Great Wall of China Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Gaussian Blurred</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_great_wall_of_china_high_frequencies.png" alt="Great Wall of China Image High Frequencies" style="width:250px;height:250px;"/>
+                                <figcaption align="center">High Frequencies</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_great_wall_of_china.png" alt="Sharpened Great Wall of China Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Sharpened Great Wall of China</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/tokyo.jpg" alt="Original Tokyo Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Original Tokyo Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_blurred_tokyo.png" alt="Gaussian Blurred Tokyo Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Gaussian Blurred</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_tokyo_high_frequencies.png" alt="Tokyo Image High Frequencies" style="width:250px;height:250px;"/>
+                                <figcaption align="center">High Frequencies</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_1_out_tokyo.png" alt="Sharpened Tokyo Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Sharpened Tokyo</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>Part 2.2: Hybrid Images</h3>
+                    <p>Here, I created hybrid images by combining two images in the following manner: I take the grayscale images for both images, align the images together by taking two reference points (usually these are eyes), and then low-pass filter one image and high-pass filter another image (obtained by subtracting original image by the low-pass filtered version of the image). Finally, add the two images together in order to get the hybrid image. </p>
+                    <p>I tried the process on the images of Nutmeg and Derek. For each image involved (Nutmeg, Derek, high-pass filtered Nutmeg, low-pass filtered Derek, and the hybrid image), I also produced the 2D fourier transform for the image and displayed them underneath the image. Parameters: \(\text{kernel size k} = 40\) and \(\text{sigma} = 20\) for Gaussian filter applied to Nutmeg, \(\text{kernel size k} = 25\) and \(\text{sigma} = 10\) for Gaussian filter applied to Derek: </p>
+
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/nutmeg.jpg" alt="Nutmeg" style="width:352px;height:264px;"/>
+                                <figcaption align="center">Nutmeg Image</figcaption> 
+                                <img src="images_2/2_2_out_2dft_nutmeg_gray.png" alt="Nutmeg Image 2D Fourier Transform" style="width:183px;height:256px;"/>
+                                <figcaption align="center">2D Fourier Transform</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/DerekPicture.jpg" alt="Derek Picture" style="width:183px;height:256px;"/>
+                                <figcaption align="center">Derek Picture</figcaption>
+                                <img src="images_2/2_2_out_2dft_derek_gray.png" alt="Derek Picture 2D Fourier Transform" style="width:183px;height:256px;"/>
+                                <figcaption align="center">2D Fourier Transform</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_high_freq_1_nutmeg_gray.png" alt="High-Pass Filtered Nutmeg" style="width:183px;height:256px;"/>
+                                <figcaption align="center">High-Pass Filtered Nutmeg</figcaption>
+                                <img src="images_2/2_2_out_2dft_nutmeg_high_freq_gray.png" alt="High-Pass Filter Nutmeg 2D Fourier Transform" style="width:183px;height:256px;"/>
+                                <figcaption align="center">2D Fourier Transform</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_low_freq_2_derek_gray.png" alt="Low-Pass Filter Derek" style="width:183px;height:256px;"/>
+                                <figcaption align="center">Low-Pass Filter Derek</figcaption>
+                                <img src="images_2/2_2_out_2dft_derek_low_freq_gray.png" alt="Low-Pass Filter Derek 2D Fourier Transform" style="width:183px;height:256px;"/>
+                                <figcaption align="center">2D Fourier Transform</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_nutmeg_derek_gray.png" alt="Nutmeg-Derek Hybrid Image" style="width:183px;height:256px;"/>
+                                <figcaption align="center">Nutmeg-Derek Hybrid Image</figcaption>
+                                <img src="images_2/2_2_out_2dft_nutmeg_derek_hybrid_gray.png" alt="Hybrid 2D Fourier Transform" style="width:183px;height:256px;"/>
+                                <figcaption align="center">2D Fourier Transform</figcaption> 
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>Here is another example with lion and panda as the images (Parameters: \(\text{kernel size k} = 30\) and \(\text{sigma} = 10\) for Gaussian filter applied to lion, \(\text{kernel size k} = 25\) and \(\text{sigma} = 10\) for Gaussian filter applied to panda): </p>
+
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/lion.jpg" alt="Lion" style="width:295px;height:200px;"/>
+                                <figcaption align="center">Lion Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/panda.jpg" alt="Panda" style="width:295px;height:200px;"/>
+                                <figcaption align="center">Panda Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_high_freq_1_lion_gray.png" alt="High-Pass Filtered Lion" style="width:295px;height:200px;"/>
+                                <figcaption align="center">High-Pass Filtered Lion</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_low_freq_2_panda_gray.png" alt="Low-Pass Filter Panda" style="width:295px;height:200px;"/>
+                                <figcaption align="center">Low-Pass Filter Panda</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_lion_panda_gray.png" alt="Lion-Panda Hybrid Image" style="width:295px;height:200px;"/>
+                                <figcaption align="center">Lion-Panda Hybrid Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>Here is another example with tiger and bunny as the images (Parameters: \(\text{kernel size k} = 30\) and \(\text{sigma} = 10\) for Gaussian filter applied to tiger, \(\text{kernel size k} = 25\) and \(\text{sigma} = 10\) for Gaussian filter applied to bunny). Note that you'd have to stand quite far away/zoom out in order to see the bunny, so this is somewhat an edge case: </p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/tiger.jpg" alt="Tiger" style="width:250px;height:200px;"/>
+                                <figcaption align="center">Tiger Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/bunny.jpg" alt="Bunny" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Bunny Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_high_freq_1_tiger_gray.png" alt="High-Pass Filtered Puppy" style="width:250px;height:250px;"/>
+                                <figcaption align="center">High-Pass Filtered Tiger</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_low_freq_2_bunny_gray.png" alt="Low-Pass Filter Bunny" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Low-Pass Filter Bunny</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_tiger_bunny_gray.png" alt="Tiger-Bunny Hybrid Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Tiger-Bunny Hybrid Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>Here is a failure case example with a puppy and bunny (Parameters: \(\text{kernel size k} = 30\) and \(\text{sigma} = 10\) for Gaussian filter applied to puppy, \(\text{kernel size k} = 25\) and \(\text{sigma} = 10\) for Gaussian filter applied to bunny). When you're far away, you can see the bunny, but when you're close, you can't really see the puppy very clearly: </p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/puppy.jpg" alt="Puppy" style="width:250px;height:200px;"/>
+                                <figcaption align="center">Puppy Image</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/bunny.jpg" alt="Bunny" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Bunny Image</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_high_freq_1_puppy_gray_fail.png" alt="High-Pass Filtered Puppy" style="width:250px;height:200px;"/>
+                                <figcaption align="center">High-Pass Filtered Puppy</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_low_freq_2_bunny_gray_fail.png" alt="Low-Pass Filter Bunny" style="width:250px;height:200px;"/>
+                                <figcaption align="center">Low-Pass Filter Bunny</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_puppy_bunny_gray_fail.png" alt="Puppy-Bunny Hybrid Image" style="width:250px;height:200px;"/>
+                                <figcaption align="center">Puppy-Bunny Hybrid Image</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>Next, I tried experimenting with color (Bells & Whistles). Some examples looked better where low pass was colored or where high pass was colored (but the rest looked worse); I've included the best looking images below. I also included the results of keeping both images colored below. I held the Gaussian filter parameters similarly to how I held them above for the respective images: </p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_lion_panda_low_pass_gray.png" alt="Lion Color" style="width:295px;height:200px;"/>
+                                <figcaption align="center">Lion-Panda Hybrid (High-Pass Colored)</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_puppy_bunny_high_pass_gray.png" alt="Bunny Color" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Puppy-Bunny Hybrid (Low-Pass Colored)</figcaption>
+                            </td>
+                            <td>
+                            <img src="images_2/2_2_out_image_aligned_nutmeg_derek_color.png" alt="Nutmeg-Derek Color Hybrid Image" style="width:183px;height:256px;"/>
+                                <figcaption align="center">Nutmeg-Derek Hybrid Image (Color)</figcaption>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_lion_panda_color.png" alt="Lion-Panda Hybrid Image" style="width:295px;height:200px;"/>
+                                <figcaption align="center">Lion-Panda Hybrid Image (Color)</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_2_out_image_aligned_tiger_bunny_color.png" alt="Tiger-Bunny Hybrid Image" style="width:250px;height:250px;"/>
+                                <figcaption align="center">Tiger-Bunny Hybrid Image (Color)</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                    <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
+                    <p>In parts 2.3 and 2.4 of the project, I work to create an oraple image through multi-resolution blending of an apple image and an orange image together. In this part, I create Gaussian and Laplacian stacks of the apple and orange images to aid in creation of the oraple image.</p>
+                    <p>For the Gaussian stacks for each image, I created \(N = 10\) identical copies of the grayscale apple and orange images. Then, for each image Gaussian stack, I hold the topmost level constant, and apply a Gaussian filter with parameters \(\text{kernel size k} = 10\) and \(\text{sigma} = 5\) to the remaining \(N-1\) images in the levels below. Then, I hold the second level constant, and again applied the Gaussian filter to the remaining \(N-2\) images below. I continue this pattern until I only apply the Gaussian filter to the last level of the Gaussian stack for each image. </p>
+                    <p>For the Laplacian stacks for each image, I take the respective Gaussian stack, and perform the following computation: <code>laplacian_stack[i] = gaussian_stack[i] - gaussian_stack[i+1]</code> for i in \([0,N-1)\) (0 indexed). The last level of the Laplacian stack is set to the image of the last level of the Gaussian stack, because the last level of the Laplacian stack should have lowest frequency. I normalize each image of the Laplacian stack before saving the image, using method <code>(matrix - np.min(matrix)) / np.max(matrix) - np.min(matrix)</code>, but don't use the normalized Laplacian images in the creation of the oraple.</p>
+                    
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Apple Gaussian stack (1 indexed):</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian_gray0.png" alt="Apple G Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian_gray4.png" alt="Apple G Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian_gray9.png" alt="Apple G Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian_gray7.png" alt="Apple G Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian_gray9.png" alt="Apple G Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Apple Laplacian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian_gray0.png" alt="Apple L Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian_gray2.png" alt="Apple L Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian_gray4.png" alt="Apple L Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian_gray7.png" alt="Apple L Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian_gray9.png" alt="Apple L Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Orange Gaussian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian_gray0.png" alt="orange G Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian_gray2.png" alt="orange G Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian_gray4.png" alt="orange G Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian_gray7.png" alt="orange G Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian_gray9.png" alt="orange G Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Orange Laplacian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian_gray0.png" alt="orange L Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian_gray2.png" alt="orange L Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian_gray4.png" alt="orange L Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian_gray7.png" alt="orange L Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian_gray9.png" alt="orange L Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Additionally, I will show the color images too to demonstrate enhancement from color (Bells & Whistles). For the color images, I used stacks of size \(N=10\), a Gaussian filter with parameters \(\text{kernel size k} = 10\) and \(\text{sigma} = 5\) to create the Gaussian stack.</p>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Apple (Color) Gaussian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian0.png" alt="Apple GC Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian2.png" alt="Apple GC Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian4.png" alt="Apple GC Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian7.png" alt="Apple GC Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_gaussian9.png" alt="Apple GC Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Apple (Color) Laplacian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian0.png" alt="Apple LC Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian2.png" alt="Apple LC Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian4.png" alt="Apple LC Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian7.png" alt="Apple LC Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_apple_laplacian9.png" alt="Apple LC Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Orange (Color) Gaussian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian0.png" alt="orange GC Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian2.png" alt="orange GC Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian4.png" alt="orange GC Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian7.png" alt="orange GC Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_gaussian9.png" alt="orange GC Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to depth 1, 3, 5, 8, 10 of the Orange (Color) Laplacian stack:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian0.png" alt="orange LC Depth 0" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian2.png" alt="orange LC Depth 2" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian4.png" alt="orange LC Depth 4" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian7.png" alt="orange LC Depth 7" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_3_out_orange_laplacian9.png" alt="orange LC Depth 9" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <!-- <p>I tried the process on the images of Nutmeg and Derek. For each image involved (Nutmeg, Derek, high-pass filtered Nutmeg, low-pass filtered Derek, and the hybrid image), I also produced the 2D fourier transform for the image and displayed them underneath the image. Parameters: \(\text{kernel size k} = 40\) and \(\text{sigma} = 20\) for Gaussian filter applied to Nutmeg, \(\text{kernel size k} = 25\) and \(\text{sigma} = 10\) for Gaussian filter applied to Derek: </p> -->
+
+                    <h3>Part 2.4: Multiresolution Blending</h3>
+                    <p>In parts 2.3 and 2.4 of the project, I work to create an oraple image through multi-resolution blending of an apple image and an orange image together. In this part, I use the Gaussian and Laplacian stacks from part 2.3 in order to blend the two images together seamlessly. </p>
+                    <p>I create a mask that is a NumPy array that has the same dimension as the Apple/Orange images. I set the left half (first half of columns; axis 1) of the NumPy mask's values to 1s, and leave the rest as 0. I create a total of \(N=10\) copies of the mask, in a similar fashion to the number of levels of the Gaussian/Laplacian stacks mentioned above. I use a Gaussian filter with parameters \(\text{kernel size k} = 30\) and \(\text{sigma} = 10\), and follow a similar procedure of applying the Gaussian filter to the levels of the mask stack as I did when creating the Gaussian stacks for the apple and orange. This mask will be helpful for computing the output image for the oraple. An image of the mask is attached below: </p>
+
+                    <p>I use the following algorithm to compute the output image: <code>out += mask_stack[i] * im1_laplacian_stack[i] +  (1 - mask_stack[i]) * im2_laplacian_stack[i]</code> for i in \([0, N)\) (0 indexed), where <code>im1</code> is the apple image and <code>im2</code> is the orange image. I also normalize the final output before saving.</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img <img style="border:1px solid black;" src="images_2/2_4_out_mask_oraple.png" alt="left half 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Mask</figcaption> 
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to the left half apple images (<code>mask_stack[i] * im1_laplacian_stack[i]</code>) for depths 1, 3, 5, 8, 10 (1 indexed):</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_left_half_gray1.png" alt="left half 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half_gray3.png" alt="left half 3" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half_gray5.png" alt="left half 5" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half_gray8.png" alt="left half 8" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half_gray10.png" alt="left half 10" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to the right half orange images (<code>(1 - mask_stack[i]) * im2_laplacian_stack[i]</code>) for depths 1, 3, 5, 8, 10:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_right_half_gray1.png" alt="right half 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half_gray3.png" alt="right half 3" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half_gray5.png" alt="right half 5" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half_gray8.png" alt="right half 8" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half_gray10.png" alt="right half 10" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to the combined image (<code>mask_stack[i] * im1_laplacian_stack[i] +  (1 - mask_stack[i]) * im2_laplacian_stack[i]</code>) at depths 1, 3, 5, 8, 10:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_gray1.png" alt="blended image 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_gray3.png" alt="blended image 3" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_gray5.png" alt="blended image 5" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_gray8.png" alt="blended image 8" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_gray10.png" alt="blended image 10" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here is the final oraple:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_gray.png" alt="Gray Oraple" style="width:300px;height:300px"/>
+                                <figcaption align="center">Final Oraple</figcaption> 
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Additionally, I will show the color images too to demonstrate enhancement from color (Bells & Whistles). I use \(N = 10\) for the size of the mask stack, and use a Gaussian filter with parameters \(\text{kernel size k} = 30\) and \(\text{sigma} = 10\).</p>
+                    <p>Here are images corresponding to the left half apple (color) images (<code>mask_stack[i] * im1_laplacian_stack[i]</code>) for depths 1, 3, 5, 8, 10:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_left_half1.png" alt="left half 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half3.png" alt="left half 3" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half5.png" alt="left half 5" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half8.png" alt="left half 8" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_left_half10.png" alt="left half 10" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to the right half orange (color) images (<code>(1 - mask_stack[i]) * im2_laplacian_stack[i]</code>) for depths 1, 3, 5, 8, 10:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_right_half1.png" alt="right half 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half3.png" alt="right half 3" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half5.png" alt="right half 5" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half8.png" alt="right half 8" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_right_half10.png" alt="right half 10" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here are images corresponding to the combined (color) image (<code>mask_stack[i] * im1_laplacian_stack[i] +  (1 - mask_stack[i]) * im2_laplacian_stack[i]</code>) at depths 1, 3, 5, 8, 10:</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image1.png" alt="blended image 1" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 1</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image3.png" alt="blended image 3" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 3</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image5.png" alt="blended image 5" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 5</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image8.png" alt="blended image 8" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 8</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image10.png" alt="blended image 10" style="width:300px;height:300px"/>
+                                <figcaption align="center">Depth 10</figcaption>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>Here is the final oraple (color):</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image.png" alt="Oraple(C)" style="width:300px;height:300px"/>
+                                <figcaption align="center">Final Oraple(Color)</figcaption> 
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>I also experimented with multiresolution blending on other additional images. I blended an image of road/mountain scenery with the night sky, using a mask with the top half of the image as 0s and the bottom half of image as 1s. I use \(N = 8\) levels for the stacks. For the Gaussian stacks I used parameters \(\text{kernel size k} = 20\) and \(\text{sigma} = 5\); for the mask Gaussian stack I used parameters \(\text{kernel size k} = 10\) and \(\text{sigma} = 20\). </p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/bigoneroadmountains.jpg" alt="Big One Road Mountains" style="width:333px;height:222px"/>
+                                <figcaption align="center">Road Mountains Picture</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/nightsky.jpg" alt="Night Sky" style="width:333px;height:222px"/>
+                                <figcaption align="center">Night Sky</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_mask_sky.png" alt="Mask Horizontal" style="width:333px;height:222px"/>
+                                <figcaption align="center">Mask</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_sky.png" alt="Blended Image Sky" style="width:333px;height:222px"/>
+                                <figcaption align="center">Road Mountains - Night Sky Blended Image</figcaption> 
+                            </td>
+                        </tr>
+                    </table>
+                    <p> I blended an image of palm tree + sky scenery with an image of a sun, using a irregularly-shaped mask where areas outside of the sun are 0s and the areas approximately inside the sun are 1s. I use \(N = 8\) levels for the stacks.  For the Gaussian stacks I used parameters \(\text{kernel size k} = 20\) and \(\text{sigma} = 5\); for the mask Gaussian stack I used parameters \(\text{kernel size k} = 10\) and \(\text{sigma} = 20\).</p>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="images_2/sun.jpg" alt="Sun" style="width:300px;height:335px"/>
+                                <figcaption align="center">Sun</figcaption>
+                            </td>
+                            <td>
+                                <img src="images_2/palmtree.jpg" alt="Palm Tree" style="width:300px;height:335px"/>
+                                <figcaption align="center">Palm Tree</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_mask_sun.png" alt="Mask Sun" style="width:300px;height:335px"/>
+                                <figcaption align="center">Mask</figcaption> 
+                            </td>
+                            <td>
+                                <img src="images_2/2_4_out_blended_image_palm_tree.png" alt="Blended Image Palm Tree" style="width:300px;height:335px"/>
+                                <figcaption align="center">Sun - Palm Tree Blended Image</figcaption> 
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>Summary</h3>
+                    <p>
+                        I learned about how to apply filters to images to extract different frequencies / features and then combine various forms of images (regular image, low-pass filtered image, high-pass filtered image) in ways that makes the images sharper or smoother (for blending). The most important thing I learned from this project was multiresolution blending, which taught me how to apply muliple filtering techniques for two images in a way that produces a smooth, elegantly-blended final image. It allowed me to tackle challenges and explore creativity in choosing what images to combine, fine tuning Gaussian filters, creating masks (and in some cases, irregular-shaped masks), and combining images to create the final image. 
+                    </p>
+
+                    <h3>Acknowledgements</h3>
+                    <ul>
+                        <li>
+                            <a href="https://inst.eecs.berkeley.edu/~cs194-26/fa21/hw/proj2/">CS194-26 Project Description and Starter Project Code(For Hybrid Image)</a> 
+                        </li>
+                        <li>
+                            I've obtained the Cameraman, Taj, Nutmeg, Derek Picture, Apple, and Orange pictures from CS194-26 Starter Project Code.
+                        </li>
+                        <li>
+                            I've obtained the following images from Google search (using exact/similar terms stated): Chinese Monastery, Great Wall of China, Tokyo, Lion, Panda, Tiger, Bunny, Puppy, Road Mountains Picture, Night Sky, Sun, Palm Tree
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+
+</html>
