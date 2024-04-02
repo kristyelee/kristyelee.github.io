@@ -1,2 +1,2 @@
 # kristyelee.github.io
-Hi. This is my personal website.
+Welcome! This is my personal website.  
