@@ -22,3 +22,4 @@ Clarifications on what is correctly involved may take place here.
 This includes in notes over page. 
 
 [Date 10-23-26 1:05 PT] Added an explanation to projects.html. Clarifying notice of what is accepted / in clear point of program, in what is accepted. [Update Completed dad95388485d796d7cb9a53edc11821267f8eb5a / Commit / Update Completed 10-23-26 1:10 PT].
+[Date 10-23-26 1:10 PT] Added clear indication of clarification to index.html.
