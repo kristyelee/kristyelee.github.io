@@ -8,6 +8,7 @@ It should be clear that there is notice over the clear point of program and made
 -- -- --
 
 I am updating that in the site here: this is not a clear point of program as acknowledged [this point is to acknowledge] in tactic of program [including tactic of files] [backing explanation can take place] this is not an individual clear point of program as acknowledged. 
+*It needs to be made clear the standard of what is involved including what is regularly acceptable.*
 
 I am updating that this is not a clear point of program as acknowledged [this point is to acknowledge] | this is clear. 
 
