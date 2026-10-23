@@ -17,7 +17,9 @@ I am updating that this is not a clear point of program as acknowledged [this po
 
  // Any further update to website thereafter here is in mind that this is being resolved. That this is in point of notice and watch. 
 
- // Updates / clarifications to update may be clarified here. This pertains to future updates after these specific notes to take *in correct direction* [Date 10-23-26 12:40]. 
+ // Updates / clarifications to update may be clarified here. This pertains to future updates after these specific notes to take *in correct direction* [Date 10-23-26 12:40 PT].
+
+ // Updates / clarifications to update may be clarified here.
 
 
 README / If New Files Are Added to website in *CORRECT STRUCTURE* in the future, then all clarifications and updates will take place here. 
