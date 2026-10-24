@@ -22,9 +22,9 @@ Clarifications on what is correctly involved may take place here.
 This includes in notes over page. 
 The main indication is that it must be clear clarifications are made, clear, or absolved/clear. 
 
-[Date 10-23-26 1:05 PT] Added an explanation to projects.html. Clarifying notice of what is accepted / in clear point of program, in what is accepted. [Update Completed dad95388485d796d7cb9a53edc11821267f8eb5a / Commit / Update Completed 10-23-26 1:10 PT].
+[Date 10-23-26 1:05 PM / 13:05 PT] Added an explanation to projects.html. Clarifying notice of what is accepted / in clear point of program, in what is accepted. [Update Completed dad95388485d796d7cb9a53edc11821267f8eb5a / Commit / Update Completed 10-23-26 1:10 PM / 13:10 PT].
 
-[Date 10-23-26 1:10 PT] Added clear indication of clarification to index.html. [c278f7d7b3b1638b0c7ff0a724d14037776f8e25]
+[Date 10-23-26 1:10 PM / 13:10 PT] Added clear indication of clarification to index.html. [c278f7d7b3b1638b0c7ff0a724d14037776f8e25]
 The intention here is to be firm about clarification. 
 
-[Date 10-23-26 2:00 PT] Update to be very clear about what is in clear point or accepted, added clear indication of firm clarification to about.html. [a8ee7a2fbc7524009b55e7acd93bdfe5746aa370 / Commit / Update Completed 10-23-26 2:05 PT].
+[Date 10-23-26 2:00 PM / 14:00 PT] Update to be very clear about what is in clear point or accepted, added clear indication of firm clarification to about.html. [a8ee7a2fbc7524009b55e7acd93bdfe5746aa370 / Commit / Update Completed 10-23-26 2:05 PM / 14:05 PT].
