@@ -13,6 +13,8 @@ The clarification is to acknowledge/make clear that there is notice. I am aware 
 
 *It needs to be made clear the standard of what is involved including what is regularly acceptable.*
 
+I am updating that this is not a clear point of program as acknowledged [this point is to acknowledge]. From a practical point the chance of such is excepted/exception in the standard of what is nominally practical. This is not a clear point of program as acknowledged [this point is to acknowledge] in tactic of program [including tactic of files] where from practical point is in exception. This is not an individual clear point of program as acknowledged.
+
 I am updating that this is not a clear point of program as acknowledged [this point is to acknowledge] | this is clear. 
 
 -- -- --
