@@ -5,11 +5,13 @@ Welcome! This is my personal website.
 Though there are greetings of personal website as have been naturally standard.
 It should be clear that there is notice over the clear point of program and made clear that this is in notice.
 
+**It is in part to clear the presentation of the program and made clear this is in notice.**
+
 -- -- --
 
 I am updating that in the site here: this is not a clear point of program as acknowledged [this point is to acknowledge] in tactic of program [including tactic of files] [backing explanation can take place] this is not an individual clear point of program as acknowledged. 
 
-The clarification is to acknowledge/make clear that there is notice. I am aware formally and will be clear of such and the clarification is to acknowledge/make clear that there is notice. The standard is what is correctly practical.
+The clarification is to acknowledge/make clear that there is notice. * *I am aware formally* * and will be clear of such and the clarification is to acknowledge/make clear that there is notice. The standard is what is correctly practical.
 
 *It needs to be made clear the standard of what is involved including what is regularly acceptable.*
 
